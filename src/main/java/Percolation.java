@@ -30,6 +30,10 @@ public class Percolation {
 
 
     public Percolation(int initialSize) {
+        if (initialSize <= 0) {
+            throw new IllegalArgumentException("Initial size must be greater than 0.");
+        }
+
         int totalNodes = initialSize * initialSize + 2;
         bottomVirtualNodeIndex = totalNodes - 1;
 
@@ -43,55 +47,54 @@ public class Percolation {
         }
     }
 
-    public boolean isFull(int x, int y) {
-        return isOpen(x, y) && uf.connected(topVirtualNodeIndex, coordinatesToIndex(x, y));
+    public boolean isFull(int down, int across) {
+        return isOpen(down, across) && uf.connected(topVirtualNodeIndex, coordinatesToIndex(down, across));
     }
 
-    public void open(int x, int y) {
-        markOpen(x, y);
-
-        if (x != size) {
-            if (isOpen(x + 1, y)) {
-                uf.union(coordinatesToIndex(x, y), coordinatesToIndex(x + 1, y));
-            }
+    public boolean isOpen(int down, int across) {
+        if (down <= 0 || across <= 0 || down > size || across > size) {
+            throw new IndexOutOfBoundsException();
         }
-
-        if (x != 1) {
-            if (isOpen(x - 1, y)) {
-                uf.union(coordinatesToIndex(x, y), coordinatesToIndex(x - 1, y));
-            }
-        }
-
-        if (y != size) {
-            if (isOpen(x, y + 1)) {
-                uf.union(coordinatesToIndex(x, y), coordinatesToIndex(x, y + 1));
-            }
-        }
-
-        if (y != 1) {
-            if (isOpen(x, y - 1)) {
-                uf.union(coordinatesToIndex(x, y), coordinatesToIndex(x, y - 1));
-            }
-        }
+        return siteOpen[coordinatesToIndex(down, across)];
     }
 
-    public boolean isOpen(int x, int y) {
-        return siteOpen[coordinatesToIndex(x, y)];
+    public void open(int down, int across) {
+        markOpen(down, across);
+
+        if (down != size) {
+            if (isOpen(down + 1, across)) {
+                uf.union(coordinatesToIndex(down, across), coordinatesToIndex(down + 1, across));
+            }
+        }
+
+        if (down != 1) {
+            if (isOpen(down - 1, across)) {
+                uf.union(coordinatesToIndex(down, across), coordinatesToIndex(down - 1, across));
+            }
+        }
+
+        if (across != size) {
+            if (isOpen(down, across + 1)) {
+                uf.union(coordinatesToIndex(down, across), coordinatesToIndex(down, across + 1));
+            }
+        }
+
+        if (across != 1) {
+            if (isOpen(down, across - 1)) {
+                uf.union(coordinatesToIndex(down, across), coordinatesToIndex(down, across - 1));
+            }
+        }
     }
 
     public boolean percolates() {
         return uf.connected(topVirtualNodeIndex, bottomVirtualNodeIndex);
     }
 
-    private int coordinatesToIndex(int x, int y) {
-        if (y == 1) {
-            return x;
-        } else {
-            return (y - 1) * size + x;
-        }
+    private int coordinatesToIndex(int down, int across) {
+        return ((down - 1) * size) + across;
     }
 
-    private void markOpen(int x, int y) {
-        siteOpen[coordinatesToIndex(x, y)] = true;
+    private void markOpen(int down, int across) {
+        siteOpen[coordinatesToIndex(down, across)] = true;
     }
 }

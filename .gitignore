@@ -2,4 +2,5 @@ build/
 out/
 .gradle/
 *.zip
+.DS_Store
 

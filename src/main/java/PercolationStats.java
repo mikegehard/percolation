@@ -4,6 +4,9 @@ public class PercolationStats {
     private int T;
 
     public PercolationStats(int N, int T) {
+        if (N <= 0 || T <= 0) {
+            throw new IllegalArgumentException();
+        }
         this.T = T;
         runs = new double[T];
         for (int i = 0; i < T; i++) {
@@ -20,7 +23,7 @@ public class PercolationStats {
             x = StdRandom.uniform(N) + 1;
             y = StdRandom.uniform(N) + 1;
 
-            if (perc.isFull(x, y)) {
+            if (!perc.isOpen(x, y)) {
                 perc.open(x, y);
                 numberOfSitesOpen += 1.0;
             }

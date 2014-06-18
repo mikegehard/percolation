@@ -1,6 +1,5 @@
 public class PercolationStats {
     private double[] runs;
-    private Percolation perc;
     private int T;
 
     public PercolationStats(int N, int T) {
@@ -15,7 +14,7 @@ public class PercolationStats {
     }
 
     private double calculatePercolationThreshold(int N) {
-        perc = new Percolation(N);
+        Percolation perc = new Percolation(N);
         double numberOfSitesOpen = 0.0;
         int x, y;
 

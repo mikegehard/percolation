@@ -57,11 +57,11 @@ public class Percolation {
     public void open(int down, int across) {
         markOpen(down, across);
 
-        if (down == 1){
+        if (down == 1) {
             uf.union(topVirtualNodeIndex, coordinatesToIndex(down, across));
         }
 
-        if (down == size){
+        if (down == size) {
             uf.union(bottomVirtualNodeIndex, coordinatesToIndex(down, across));
         }
 

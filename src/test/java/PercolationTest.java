@@ -6,13 +6,8 @@ import static org.junit.Assert.assertFalse;
 public class PercolationTest {
 
     @Test
-    public void newPercolationIsAlwaysFull() {
+    public void newPercolationIsAlwaysClosed() {
         Percolation perc = new Percolation(2);
-
-        assertTrue(perc.isFull(1, 1));
-        assertTrue(perc.isFull(1, 2));
-        assertTrue(perc.isFull(2, 1));
-        assertTrue(perc.isFull(2, 2));
 
         assertFalse(perc.isOpen(1, 1));
         assertFalse(perc.isOpen(1, 2));
@@ -22,9 +17,21 @@ public class PercolationTest {
 
     @Test
     public void openingASquare() {
-        Percolation perc = new Percolation(2);
+        Percolation perc = new Percolation(3);
+        assertFalse(perc.isFull(1, 1));
+        perc.open(1, 1);
+        assertTrue(perc.isOpen(1, 1));
+        assertTrue(perc.isFull(1, 1));
+
+        assertFalse(perc.isFull(1, 2));
         perc.open(1, 2);
         assertTrue(perc.isOpen(1, 2));
+        assertTrue(perc.isFull(1, 2));
+
+        assertFalse(perc.isFull(3, 2));
+        perc.open(3, 2);
+        assertTrue(perc.isOpen(1, 2));
+        assertFalse(perc.isFull(3, 2));
     }
 
     @Test

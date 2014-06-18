@@ -44,7 +44,7 @@ public class Percolation {
     }
 
     public boolean isFull(int x, int y) {
-        return !isOpen(x, y);
+        return isOpen(x, y) && uf.connected(topVirtualNodeIndex, coordinatesToIndex(x, y));
     }
 
     public void open(int x, int y) {

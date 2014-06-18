@@ -4,27 +4,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
 public class PercolationTest {
-
-    @Test
-    public void newPercolationIsAlwaysClosed() {
-        Percolation perc = new Percolation(2);
-
-        assertFalse(perc.isOpen(1, 1));
-        assertFalse(perc.isOpen(1, 2));
-        assertFalse(perc.isOpen(2, 1));
-        assertFalse(perc.isOpen(2, 2));
-    }
-
-    @Test
-    public void sizeOfOneWorksProperly() {
-        Percolation perc = new Percolation(1);
-
-        assertFalse(perc.percolates());
-
-        perc.open(1, 1);
-
-        assertTrue(perc.percolates());
-    }
+    // Start of error cases
 
     @Test(expected = IllegalArgumentException.class)
     public void initialSizeEquals0() {
@@ -113,6 +93,29 @@ public class PercolationTest {
         Percolation perc = new Percolation(10);
 
         perc.isFull(1, 11);
+    }
+
+    // End of error cases
+
+    @Test
+    public void sizeOfOneWorksProperly() {
+        Percolation perc = new Percolation(1);
+
+        assertFalse(perc.percolates());
+
+        perc.open(1, 1);
+
+        assertTrue(perc.percolates());
+    }
+
+    @Test
+    public void newPercolationIsAlwaysClosed() {
+        Percolation perc = new Percolation(2);
+
+        assertFalse(perc.isOpen(1, 1));
+        assertFalse(perc.isOpen(1, 2));
+        assertFalse(perc.isOpen(2, 1));
+        assertFalse(perc.isOpen(2, 2));
     }
 
     /*

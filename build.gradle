@@ -9,5 +9,5 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
-    compile files('../libraries/algs4.jar')
+    compile files('../libraries/algs4.jar', '../libraries/stdlib.jar')
 }

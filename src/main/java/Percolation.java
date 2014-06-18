@@ -41,10 +41,6 @@ public class Percolation {
         siteOpen = new boolean[totalNodes];
 
         uf = new WeightedQuickUnionUF(totalNodes);
-        for (int i = 1; i <= initialSize; i++) {
-            uf.union(topVirtualNodeIndex, i);
-            uf.union(bottomVirtualNodeIndex, bottomVirtualNodeIndex - i);
-        }
     }
 
     public boolean isFull(int down, int across) {
@@ -60,6 +56,14 @@ public class Percolation {
 
     public void open(int down, int across) {
         markOpen(down, across);
+
+        if (down == 1){
+            uf.union(topVirtualNodeIndex, coordinatesToIndex(down, across));
+        }
+
+        if (down == size){
+            uf.union(bottomVirtualNodeIndex, coordinatesToIndex(down, across));
+        }
 
         if (down != size) {
             if (isOpen(down + 1, across)) {

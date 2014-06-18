@@ -15,6 +15,17 @@ public class PercolationTest {
         assertFalse(perc.isOpen(2, 2));
     }
 
+    @Test
+    public void sizeOfOneWorksProperly() {
+        Percolation perc = new Percolation(1);
+
+        assertFalse(perc.percolates());
+
+        perc.open(1, 1);
+
+        assertTrue(perc.percolates());
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void initialSizeEquals0() {
         Percolation perc = new Percolation(0);

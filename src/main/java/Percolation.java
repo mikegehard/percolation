@@ -23,7 +23,8 @@ for 4x4
 
 public class Percolation {
     private boolean[] siteOpen;
-    private WeightedQuickUnionUF uf;
+    private WeightedQuickUnionUF percolates;
+    private WeightedQuickUnionUF backwash;
     private int size;
     private int topVirtualNodeIndex = 0;
     private int bottomVirtualNodeIndex;
@@ -40,11 +41,14 @@ public class Percolation {
         size = initialSize;
         siteOpen = new boolean[totalNodes];
 
-        uf = new WeightedQuickUnionUF(totalNodes);
+        percolates = new WeightedQuickUnionUF(totalNodes);
+        backwash = new WeightedQuickUnionUF(totalNodes);
     }
 
     public boolean isFull(int down, int across) {
-        return isOpen(down, across) && uf.connected(topVirtualNodeIndex, coordinatesToIndex(down, across));
+        return isOpen(down, across)
+                && percolates.connected(topVirtualNodeIndex, coordinatesToIndex(down, across))
+                && backwash.connected(topVirtualNodeIndex, coordinatesToIndex(down, across));
     }
 
     public boolean isOpen(int down, int across) {
@@ -58,40 +62,45 @@ public class Percolation {
         markOpen(down, across);
 
         if (down == 1) {
-            uf.union(topVirtualNodeIndex, coordinatesToIndex(down, across));
+            percolates.union(topVirtualNodeIndex, coordinatesToIndex(down, across));
+            backwash.union(topVirtualNodeIndex, coordinatesToIndex(down, across));
         }
 
         if (down == size) {
-            uf.union(bottomVirtualNodeIndex, coordinatesToIndex(down, across));
+            percolates.union(bottomVirtualNodeIndex, coordinatesToIndex(down, across));
         }
 
         if (down != size) {
             if (isOpen(down + 1, across)) {
-                uf.union(coordinatesToIndex(down, across), coordinatesToIndex(down + 1, across));
+                percolates.union(coordinatesToIndex(down, across), coordinatesToIndex(down + 1, across));
+                backwash.union(coordinatesToIndex(down, across), coordinatesToIndex(down + 1, across));
             }
         }
 
         if (down != 1) {
             if (isOpen(down - 1, across)) {
-                uf.union(coordinatesToIndex(down, across), coordinatesToIndex(down - 1, across));
+                percolates.union(coordinatesToIndex(down, across), coordinatesToIndex(down - 1, across));
+                backwash.union(coordinatesToIndex(down, across), coordinatesToIndex(down - 1, across));
             }
         }
 
         if (across != size) {
             if (isOpen(down, across + 1)) {
-                uf.union(coordinatesToIndex(down, across), coordinatesToIndex(down, across + 1));
+                percolates.union(coordinatesToIndex(down, across), coordinatesToIndex(down, across + 1));
+                backwash.union(coordinatesToIndex(down, across), coordinatesToIndex(down, across + 1));
             }
         }
 
         if (across != 1) {
             if (isOpen(down, across - 1)) {
-                uf.union(coordinatesToIndex(down, across), coordinatesToIndex(down, across - 1));
+                percolates.union(coordinatesToIndex(down, across), coordinatesToIndex(down, across - 1));
+                backwash.union(coordinatesToIndex(down, across), coordinatesToIndex(down, across - 1));
             }
         }
     }
 
     public boolean percolates() {
-        return uf.connected(topVirtualNodeIndex, bottomVirtualNodeIndex);
+        return percolates.connected(topVirtualNodeIndex, bottomVirtualNodeIndex);
     }
 
     private int coordinatesToIndex(int down, int across) {

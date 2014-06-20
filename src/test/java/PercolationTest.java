@@ -176,4 +176,14 @@ public class PercolationTest {
 
         assertTrue(perc.percolates());
     }
+
+    @Test
+    public void testBackwashPrevention(){
+        Percolation perc = new Percolation(3);
+        perc.open(1, 3);
+        perc.open(2, 3);
+        perc.open(3, 3);
+        perc.open(3, 1);
+        assertFalse(perc.isFull(3,1));
+    }
 }
